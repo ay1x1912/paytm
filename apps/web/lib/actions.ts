@@ -37,7 +37,7 @@ const trnx= await prisma.onRampTransaction.findMany({
     userId:session?.user.id
   }
 })
- return trnx.map((trn)=>({
+ return trnx.map((trn:any)=>({
   time:trn.startDate,
   amount:trn.balance,
   status:trn.status,
