@@ -37,7 +37,7 @@ const trnx= await prisma.onRampTransaction.findMany({
     userId:session?.user.id
   }
 })
- return trnx.map((trn)=>({
+ return trnx.map((trn:any)=>({
   time:trn.startDate,
   amount:trn.balance,
   status:trn.status,
@@ -102,7 +102,7 @@ export const sendMoney= async(email:string , amount:number)=>{
     }
   }
   const tranfer= await prisma.$transaction(
-    async (tx)=>{
+    async (tx:any) =>{
   //  lock the tranaction
 try{await tx.$queryRaw`SELECT * FROM "Balance" WHERE "userId"=${session.session.userId} FOR UPDATE`
 const formBalance=await tx.balance.findUnique({where:{userId:session.session.userId}})
