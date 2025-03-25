@@ -20,7 +20,7 @@ async function RecentTransaciton({}) {
     <CardTitle>Recent Transaction</CardTitle>
   </CardHeader>
   <CardContent>
-    {trnx.map((trn,ind)=>
+    {trnx.map((trn:any,ind)=>
        <TransactionComponent key={ind} amount={trn.amount}  date={trn.time}/>)}
   </CardContent>
 </Card>
