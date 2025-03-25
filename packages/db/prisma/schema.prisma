@@ -1,0 +1,107 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String    @id @default(cuid())
+  name             String
+  email            String
+  emailVerified    Boolean   @default(false)
+  image            String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  twoFactorEnabled Boolean   @default(false)
+  Session          Session[]
+  Account          Account[]
+  Balance           Balance?
+  onRampTranaction OnRampTransaction[]
+  fromP2pTransfer P2P[] @relation(name: "from")
+  toP2PTransder P2P[] @relation(name: "to")
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  expiresAt DateTime
+  token     String   @unique
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("session")
+}
+
+model Account {
+  id           String    @id @default(cuid())
+  accountId    String
+  providerId   String
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken  String?
+  refreshToken String?
+  idToken      String?
+  expiresAt    DateTime?
+  password     String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime? @updatedAt
+
+  @@map("verification")
+}
+
+model Balance{
+  id String @id @default(uuid())
+  balance Int @default(500)
+  userId String @unique
+  user User @relation(fields: [userId],references: [id])
+}
+
+model OnRampTransaction{
+  id String @id @default(uuid())
+  balance Int
+  token String @unique //onRamp is created when the user click on the paynow button and get a redirect with a token  the token is stored her and then is used to indetify the transaction .
+  provider String 
+  status status @default(Pending)
+  startDate DateTime @default(now())
+  userId String
+  user User @relation(fields: [userId],references: [id])
+}
+
+enum status{
+  Success 
+  Failure
+  Pending
+}
+model P2P{
+  id String @id @default(uuid())
+  amount Int
+  fromUser  User @relation( name: "from",fields: [fromId],references: [id])
+  fromId String
+ toUser  User @relation( name: "to",fields: [toId],references: [id])
+  toId String
+ 
+}
