@@ -15,7 +15,6 @@ import {
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
 import Link from 'next/link'
-import { auth } from '@/lib/auth'
 import { authClient } from '@/lib/auth-client'
 import { toast } from 'sonner'
 const items = [

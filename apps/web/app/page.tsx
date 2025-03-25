@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import { prisma } from '@repo/db/prisma'
+
 import { useCounterStore } from '@repo/zust/useCounterStore'
 import { Button } from '@/components/ui/button'
 // import{useCounterStore} from '@repo/zust'

@@ -1,9 +1,8 @@
 import { auth } from '@/lib/auth'
-import { prisma } from '@repo/db/prisma'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import React from 'react'
-import {useCounterStore} from '@repo/zust/useCounterStore'
+
 async function DashbaordPage() {
     
     const session=await auth.api.getSession({

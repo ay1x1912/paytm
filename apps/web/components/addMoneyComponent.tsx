@@ -22,8 +22,6 @@ import {
   } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { addOnRamp } from '@/lib/actions'
-import { redirect } from 'next/navigation'
-import { prisma } from '@repo/db/prisma'
 
 
 const suportedBanks=[{
